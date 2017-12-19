@@ -23,9 +23,6 @@ public class AdminProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private CategoryService categoryService;
-
     @GetMapping("/api/admin/product")
     public ResponseEntity<Iterable<Product>> index() {
         return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);

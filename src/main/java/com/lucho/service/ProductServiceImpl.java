@@ -3,9 +3,15 @@ package com.lucho.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.lucho.domain.web.Item;
+import com.lucho.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +25,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
-	
+	@Autowired
+	private ItemRepository itemRepository;
 	@Override
 	@Transactional(readOnly = true)
 	public Iterable<Product> findAll() {
@@ -28,10 +35,11 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Product> findLatest(int page, int size) {
-		return productRepository.findTop10ByOrderByIdDesc();
+	public Page<Product> findLatest(int page, int size) {
+		PageRequest pageRequest = new PageRequest(page, size, Sort.Direction.DESC, "id");
+		return productRepository.findLatest(pageRequest);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Product> search(String keyword) {

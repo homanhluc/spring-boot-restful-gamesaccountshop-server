@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,15 +53,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.addFilterBefore(
 				new JWTLoginFilter("/login", authenticationManager()),
 				UsernamePasswordAuthenticationFilter.class);
-
 		http.addFilterBefore(
 				new JWTAuthenticationFilter(),
 				UsernamePasswordAuthenticationFilter.class);
-
-
-
 		http.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/apiX/**").authenticated()
 				.antMatchers(HttpMethod.GET, "/login").permitAll();
-    }
+
+		http.logout()
+				.logoutUrl("/api/logout")
+				.logoutSuccessUrl("/api/index")
+				.invalidateHttpSession(true);
+
+	}
 }

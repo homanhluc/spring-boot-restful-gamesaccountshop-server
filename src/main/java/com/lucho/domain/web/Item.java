@@ -30,12 +30,12 @@ public class Item implements Serializable {
 	
 	@EmbeddedId
 	private PK pk = new PK();
-	
+
 	@Embeddable
 	private static class PK implements Serializable {
 
 		private static final long serialVersionUID = 1L;
-			
+
 		@ManyToOne(fetch = FetchType.LAZY)
 		private Order order;
 		
@@ -96,11 +96,11 @@ public class Item implements Serializable {
 	
 	@Column(name = "price", nullable = false)
 	private int price;
-	
+
 	public Item() {
 		
 	}
-	
+
 	@Transient
 	public Order getOrder() {
 		return pk.getOrder();

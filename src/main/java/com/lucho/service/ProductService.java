@@ -2,6 +2,7 @@ package com.lucho.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lucho.domain.web.Product;
@@ -10,7 +11,7 @@ public interface ProductService {
 
 	Iterable<Product> findAll();
 	
-	List<Product> findLatest(int page, int size);
+	Page<Product> findLatest(int page, int size);
 	
 	List<Product> search(String keyword);
 	
